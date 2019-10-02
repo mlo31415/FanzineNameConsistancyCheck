@@ -326,7 +326,10 @@ with open("Uncanonical matches between Fancy 3 and Fanac.org.txt", "w+") as f:
     f.write("List of Fanac.org Fanzine directory names which match a Fancy redirect\n")
     f.write("Fanac Directory    -->    Fancy Match    -->    Fancy Redirect\m")
     for u in unpreferred:
-        redir=redirectFromCanName[CanonicizeWikidotName(u[1])]
+        canU=CanonicizeWikidotName(u[1])
+        redir="None"
+        if canU is not None and canU in redirectFromCanName.keys():
+            redir=redirectFromCanName[canU]
         f.write(u[0]+"     -->     "+u[1]+"     -->     "+redir+"\n")
 
 with open("Fanac.org directories with no match on Fancy 3.txt", "w+") as f:

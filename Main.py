@@ -335,6 +335,7 @@ with open("Uncanonical matches between Fancy 3 and Fanac.org.txt", "w+") as f:
 with open("Fanac.org directories with no match on Fancy 3.txt", "w+") as f:
     f.write("List of Fanac.org Fanzine directory names which can't be found in Fancy 3\n")
     f.write("Fanac Directory\n")
-    f.writelines(missing)
+    for m in missing:
+        f.write(m+"\n")
 
 pass

@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import requests
 
 
-# Load all fanzine (plus clubzine plus apazine) names from Fancy 3
+# Load all fanzine , clubzine, and apazine names from Fancy 3
 #   Include redirects
 # Get list of all fanzine directories from Fanac
 # Produce a list of all directories on Fanac that don't have a fanzine on Fancy.  Note those which match a redirect.
@@ -70,7 +70,7 @@ def GetRedirect(path: str, page: str):
 #       The name of directory is the name of the directory pointed to
 
 def ReadClassicModernPages():
-    print("----Begin reading Classic and Modern tables")
+    print("***Begin reading Classic and Modern tables")
     # This is a list of fanzines on Fanac.org
     # Each item is a tuple of (compressed name,  link name,  link url)
     fanacFanzineDirectories=[]
@@ -78,7 +78,7 @@ def ReadClassicModernPages():
     for dirs in directories:
         ReadModernOrClassicTable(fanacFanzineDirectories, dirs)
 
-    print("----Done reading Classic and Modern tables")
+    print("***Done reading Classic and Modern tables")
     return fanacFanzineDirectories
 
 
@@ -223,6 +223,12 @@ def CanonicizeWikidotName(name):
             canname=canname[:-1]
     return canname
 
+
+#=================================================================================
+#=================================================================================
+#=================================================================================
+# Begin Main
+#=================================================================================
 fancySitePath=r"C:\Users\mlo\Documents\usr\Fancyclopedia\Python\site"
 
 # The local version of the site is a pair (sometimes also a folder) of files with the Wikidot name of the page.
@@ -269,6 +275,8 @@ fanacFanzineDirectories=ReadClassicModernPages()
 #   The Fanac directory name can't be found on Fancy 3
 
 # We start by creating a list of Fancy 3 fanzine names turned into their Fanac forms
+
+print("***Analyzing results")
 fanacNamesOfFancyPages=[]   # List of the Fanac canonical form of names in Fancy
 fancyTitleFromFanacFormToFancyForm={}                      # Dictionary which takes the Fanac canonical form of a Fancy name and gives you the Fancy name
 # This will be a dictionary: key=Fancy page's title, value=Fanac form of key

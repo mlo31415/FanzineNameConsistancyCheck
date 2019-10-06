@@ -294,15 +294,25 @@ missing=[]          # Can't find these on Fancy
 uncanonical=[]      # Fanac directories with names that are not canonical by Fanac standards
 
 for ignore, fanacDirectory in fanacFanzineDirectories:  # fanacDirectory is the name of a Fanac fanzine directory
+
+
     canFanacDirectory=FancyToFanacForm(fanacDirectory)
     if canFanacDirectory != fanacDirectory:
         uncanonical.append((fanacDirectory, canFanacDirectory))
 
     # We want to discover if the fanac directory name is a properly canonical fanac directory name and if it is found in Fancy
+    found=False
+    found_fanzine=False
     if fanacDirectory in fanacNamesOfFancyPages:
+        found=True
         fancyName=fancyTitleFromFanacFormToFancyForm[fanacDirectory]
+    elif (fanacDirectory+"_(fanzine)") in fanacNamesOfFancyPages:
+        fancyName=fancyTitleFromFanacFormToFancyForm[fanacDirectory+"_(fanzine)"]
+        found=True
+        found_fanzine=True
+    if found:
         fancyCanonical=CanonicizeWikidotName(fancyName)
-        if fancyName in fancyTitleFromFancyCanName.values() and fancyCanonical in fancyTitleFromFancyCanName.keys() and fancyTitleFromFancyCanName[fancyCanonical] == fancyName:
+        if fancyName in fancyTitleFromFancyCanName.values() and fancyCanonical in fancyTitleFromFancyCanName.keys() and fancyTitleFromFancyCanName[fancyCanonical] == fancyName and not found_fanzine:
             preferred.append((fanacDirectory, fancyName))
         else:
             unpreferred.append((fanacDirectory, fancyName))
@@ -311,20 +321,20 @@ for ignore, fanacDirectory in fanacFanzineDirectories:  # fanacDirectory is the 
 
 print("***Writing results")
 with open("Uncanonical Fanac.org directories.txt", "w+") as f:
-    f.write("List of Fanac.org Fanzine directory names which are not in Fanac.org's canonical form\n")
-    f.write("Actual    -->    Canonical\m")
+    f.write("List of Fanac.org Fanzine directory names which are not in Fanac.org's canonical form\n\n")
+    f.write("Actual    -->    Canonical\n\n")
     for u in uncanonical:
         f.write(u[0]+"     -->     "+u[1]+"\n")
 
 with open("Matches between Fancy 3 and Fanac.org.txt", "w+") as f:
-    f.write("List of Fanac.org Fanzine directory names which are presently in Fancy\n")
-    f.write("Fancy Name    -->    Fanac Directory\m")
+    f.write("List of Fanac.org Fanzine directory names which are presently in Fancy\n\n")
+    f.write("Fancy Name    -->    Fanac Directory\n\n")
     for p in preferred:
         f.write(p[1]+"     -->     "+p[0]+"\n")
 
 with open("Uncanonical matches between Fancy 3 and Fanac.org.txt", "w+") as f:
-    f.write("List of Fanac.org Fanzine directory names which match a Fancy redirect\n")
-    f.write("Fanac Directory    -->    Fancy Match    -->    Fancy Redirect\m")
+    f.write("List of Fanac.org Fanzine directory names which match a Fancy redirect\n\n")
+    f.write("Fanac Directory    -->    Fancy Match    -->    Fancy Redirect\n\n")
     for u in unpreferred:
         canU=CanonicizeWikidotName(u[1])
         redir="None"
@@ -333,8 +343,8 @@ with open("Uncanonical matches between Fancy 3 and Fanac.org.txt", "w+") as f:
         f.write(u[0]+"     -->     "+u[1]+"     -->     "+redir+"\n")
 
 with open("Fanac.org directories with no match on Fancy 3.txt", "w+") as f:
-    f.write("List of Fanac.org Fanzine directory names which can't be found in Fancy 3\n")
-    f.write("Fanac Directory\n")
+    f.write("List of Fanac.org Fanzine directory names which can't be found in Fancy 3\n\n")
+    f.write("Fanac Directory\n\n")
     for m in missing:
         f.write(m+"\n")
 

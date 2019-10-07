@@ -292,9 +292,12 @@ preferred=[]        # Fanac directories with the preferred name
 unpreferred=[]      # Fanac directories with a varient name, but still recognizable
 missing=[]          # Can't find these on Fancy
 uncanonical=[]      # Fanac directories with names that are not canonical by Fanac standards
+weird=[]            # Fanac directories that include path information.  Gotta figure out what these are!
 
 for ignore, fanacDirectory in fanacFanzineDirectories:  # fanacDirectory is the name of a Fanac fanzine directory
-
+    if "/" in fanacDirectory or "\\" in fanacDirectory:
+        weird.append(fanacDirectory)
+        continue
 
     canFanacDirectory=FancyToFanacForm(fanacDirectory)
     if canFanacDirectory != fanacDirectory:
@@ -348,4 +351,16 @@ with open("Fanac.org directories with no match on Fancy 3.txt", "w+") as f:
     for m in missing:
         f.write(m+"\n")
 
+with open("Fanac.org directories with a weird format.txt", "w+") as f:
+    f.write("List of Fanac.org Fanzine directory names have a weird format\n\n")
+    f.write("Fanac Directory\n\n")
+    for m in weird:
+        f.write(m+"\n")
+
+with open("Fanzine Name Consistancy Check numbers.txt", "w+") as f:
+    f.write(str(len(preferred))+" Fanac.org Fanzine directory names which are presently in Fanc\n")
+    f.write(str(len(unpreferred))+" Uncanonical matches between Fancy 3 and Fanac.org (e.g., a Fanac points to a Fancy redirect)\n")
+    f.write(str(len(uncanonical))+" Fanac.org Fanzine directory names are not in Fanac.org's canonical formt\n")
+    f.write(str(len(missing))+" Fanac.org Fanzine directory names can't be found in Fancy 3\n")
+    f.write(str(len(weird))+" Fanac.org Fanzine directory names have a weird format\n")
 pass
